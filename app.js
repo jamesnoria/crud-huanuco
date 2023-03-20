@@ -1,5 +1,6 @@
 import mysql from "mysql2";
 import express from "express";
+import camelcase from "camelcase";
 
 const app = express();
 const port = 3000;
@@ -23,15 +24,22 @@ app.get("/personas", (req, res) => {
 
 // ESTE ENDPOINT ES PARA CREAR UNA PERSONA
 app.post("/create", (req, res) => {
-  const PersonId = req.body.PersonId;
+  const PersonID = req.body.PersonID;
   const LastName = req.body.LastName;
   const FirstName = req.body.FirstName;
   const Address = req.body.Address;
   const City = req.body.City;
+  
+  const Lastname = LastName.toLowerCase()
+  const Firstname = FirstName.toLowerCase()
+  const city = City.toLowerCase()
+
+  const minuscula = Address.toLowerCase()
+  const address = minuscula[0].toUpperCase() + minuscula.substring(1)
 
   connection.query(
-    "INSERT INTO `crud-huanuco`.`Persons` (PersonId, LastName, FirstName, Address, City) VALUES (?, ?, ?, ?, ?)",
-    [PersonId, LastName, FirstName, Address, City],
+    "INSERT INTO `crud-huanuco`.`Persons` (PersonID, LastName, FirstName, Address, City) VALUES (?, ?, ?, ?, ?)",
+    [PersonID, camelcase(Lastname,{pascalCase:true}), camelcase(Firstname,{pascalCase:true}), address, camelcase(city,{pascalCase:true})],
     function (err, results) {
       res.json({
         message: "Persona creada",
@@ -43,11 +51,11 @@ app.post("/create", (req, res) => {
 
 // ESTE ENDPOINT ES PARA BORRAR UNA PERSONA
 app.delete("/borrarpersona", (req, res) => {
-  const PersonId = req.body.PersonId;
+  const PersonID = req.body.PersonID;
 
   connection.query(
-    "DELETE FROM `crud-huanuco`.`Persons` WHERE PersonId = ?",
-    [PersonId],
+    "DELETE FROM `crud-huanuco`.`Persons` WHERE PersonID = ?",
+    [PersonID],
     function (err, results) {
       res.json({
         message: "Persona borrada",
@@ -58,17 +66,25 @@ app.delete("/borrarpersona", (req, res) => {
 });
 
 app.put("/actualizarpersona", (req, res) => {
-  const PersonId = req.body.PersonId;
+  const PersonID = req.body.PersonID;
   const LastName = req.body.LastName;
   const FirstName = req.body.FirstName;
   const Address = req.body.Address;
   const City = req.body.City;
+
+  const Lastname = LastName.toLowerCase()
+  const Firstname = FirstName.toLowerCase()
+  const city = City.toLowerCase()
+
+  const minuscula = Address.toLowerCase()
+  const address = minuscula[0].toUpperCase() + minuscula.substring(1)
+
   connection.query(
-    "UPDATE `crud-huanuco`.`Persons` SET LastName = ?, FirstName = ?, Address = ?, City = ? WHERE PersonId = ?",
-    [LastName, FirstName, Address, City, PersonId],
+    "UPDATE `crud-huanuco`.`Persons` SET LastName = ?, FirstName = ?, Address = ?, City = ? WHERE PersonID = ?",
+    [camelcase(Lastname,{pascalCase:true}), camelcase(Firstname,{pascalCase:true}), address, camelcase(city,{pascalCase:true}), PersonID],
     function(err,results){
       res.json({
-        message: `La perosna con el id=${PersonId} fue actualizada`,
+        message: `La perosna con el id=${PersonID} fue actualizada`,
         datos: results,
       })
     }
