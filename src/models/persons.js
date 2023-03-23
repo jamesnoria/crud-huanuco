@@ -1,8 +1,8 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../config/dataBase.js";
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../config/dataBase.js';
 
 export const Person = sequelize.define(
-  "Persons",
+  'Persons',
   {
     PersonID: {
       type: DataTypes.INTEGER,
@@ -21,6 +21,6 @@ export const Person = sequelize.define(
     },
   },
   {
-    freezeTableName: true,
+    timestamps: false,
   }
 );
