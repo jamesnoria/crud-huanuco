@@ -1,4 +1,3 @@
-import mysql from "mysql2";
 import Sequelize from "sequelize";
 
 export const sequelize = new Sequelize(

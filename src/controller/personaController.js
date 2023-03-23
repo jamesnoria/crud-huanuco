@@ -1,11 +1,26 @@
-import camelcase from 'camelcase';
-import {Person} from '../models/persons.js'
+import camelcase from "camelcase";
+import { Person } from "../models/persons.js";
 
-export const obtenerPersona = async (req,res) =>{
-    const result = await Person.findAll();
-    res.send('hola')
-    console.log(result)
-}
+export const obtenerPersona = async (req, res) => {
+  try {
+    const result = await Person.findAll({
+      attributes: [
+        "id",
+        "PersonID",
+        "LastName",
+        "FirstName",
+        "Address",
+        "City",
+      ],
+    });
+    res.json({
+      message: "Lista de personas",
+      data: result,
+    });
+  } catch (error) {
+    console.error("El error esta en el metodo GET", error);
+  }
+};
 
 // export const obtenerPersona = async (req, res) => {
 //   connection.query('SELECT * FROM `Persons`', function (err, results, fields) {
@@ -16,7 +31,7 @@ export const obtenerPersona = async (req,res) =>{
 //   });
 // };
 
-export const crearPersona = async (req,res) => {
+export const crearPersona = async (req, res) => {
   const PersonID = req.body.PersonID;
   const LastName = req.body.LastName;
   const FirstName = req.body.FirstName;
@@ -29,23 +44,19 @@ export const crearPersona = async (req,res) => {
 
   const minuscula = Address.toLowerCase();
   const address = minuscula[0].toUpperCase() + minuscula.substring(1);
-try {
-    const newPerson = await Person.create({
-    PersonID : PersonID,
+
+  const result = await Person.create({
+    PersonID: PersonID,
     LastName: camelcase(Lastname, { pascalCase: true }),
     FirstName: camelcase(Firstname, { pascalCase: true }),
     Address: address,
-    City: camelcase(city, { pascalCase: true })
-  })
+    City: camelcase(city, { pascalCase: true }),
+  });
   res.json({
-    message: 'Persona creada',
-    datos: newPerson
-  })
-} catch (error) {
-  
-}
-
-}
+    message: "Persona creado",
+    data: result,
+  });
+};
 
 // export const crearPersona = (req, res) => {
 //   const PersonID = req.body.PersonID;
@@ -80,6 +91,27 @@ try {
 //   );
 // };
 
+export const borrarPersona = async (req, res) => {
+  
+    const PersonID = req.body.PersonID;
+    // const LastName = req.body.LastName;
+    // const FirstName = req.body.FirstName;
+    // const Address = req.body.Address;
+    // const City = req.body.City;
+    try {
+    const result = await Person.destroy({
+      where: {
+        PersonID: PersonID,
+      },
+    });
+    res.json({
+      message: `Se elimino al PersonID = ${PersonID}`,
+    });
+  } catch (error) {
+    console.error("El error esta en el metodo DELETE", error);
+  }
+};
+
 // export const borrarPersona = (req, res) => {
 //   const PersonID = req.body.PersonID;
 //   const LastName = req.body.LastName;
@@ -98,6 +130,42 @@ try {
 //   );
 // };
 
+export const actualizarPersona = async (req, res) => {
+  const PersonID = req.body.PersonID;
+  const LastName = req.body.LastName;
+  const FirstName = req.body.FirstName;
+  const Address = req.body.Address;
+  const City = req.body.City;
+
+  const Lastname = LastName.toLowerCase();
+  const Firstname = FirstName.toLowerCase();
+  const city = City.toLowerCase();
+
+  const minuscula = Address.toLowerCase();
+  const address = minuscula[0].toUpperCase() + minuscula.substring(1);
+
+  try {
+    const result = await Person.update(
+      {
+        LastName: camelcase(Lastname, { pascalCase: true }),
+        FirstName: camelcase(Firstname, { pascalCase: true }),
+        Address: address,
+        City: camelcase(city, { pascalCase: true }),
+      },
+      {
+        where: {
+          PersonID: PersonID,
+        },
+      }
+    );
+    res.json({
+      message: `Se actualizo al PersonID = ${PersonID}`,
+      data: result,
+    });
+  } catch (error) {
+    console.error("El error esta en el metodo PUT ", error);
+  }
+};
 // export const actualizarPersona = (req, res) => {
 //   const PersonID = req.body.PersonID;
 //   const LastName = req.body.LastName;
@@ -129,5 +197,3 @@ try {
 //     }
 //   );
 // };
-
-
