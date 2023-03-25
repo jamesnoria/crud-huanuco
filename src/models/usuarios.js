@@ -11,16 +11,60 @@ export const Usarios = sequelize.define(
     },
     username: {
       type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'El campo no puede ser nulo'
+        },
+        len: {
+          args: [8,35],
+          msg: 'El username debe tener entre 8 y 35 caracteres'
+        },
+      }
     },
     name: {
       type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'El campo no puede ser nulo'
+        },
+        len: {
+          args: [2,25],
+          msg: 'El name debe tener entre 2 y 35 caracteres'
+        },
+        isAlpha: {
+          args: true,
+          msg: 'El name debe contener solo letras',
+        },
+      },
     },
     last_name: {
       type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'El campo no puede ser nulo'
+        },
+        len: {
+          args: [3,35],
+          msg: 'El lastname debe tener entre 3 y 35 caracteres'
+        },
+        isAlpha: {
+          args: true,
+          msg: 'El lastname debe contener solo letras',
+        },
+      },
     },
     email: {
       type: DataTypes.STRING,
       unique: true,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: 'El email debe ser asi: ejemplo@deemail.com'
+        }
+      }
     },
   },
   {

@@ -12,7 +12,7 @@ export const obtenerUsuarios = async (req, res) => {
   } catch (error) {
     console.error("El error esta en el metodo GET", error);
   }
-}
+};
 
 export const crearUsuario = async (req, res) => {
   try {
@@ -29,5 +29,47 @@ export const crearUsuario = async (req, res) => {
     });
   } catch (error) {
     console.error("El error esta en el metodo POST", error);
+    res.json(error);
+  }
+};
+
+export const eliminarUsuario = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const result = await Usarios.destroy({
+      where: {
+        username,
+      },
+    });
+    res.json({
+      message: `El usuario ${username} fue eliminado`,
+    });
+  } catch (error) {
+    console.error("El error esta en el metodo DELETE", error);
+  }
+};
+
+export const actualizarUsuario = async (req, res) => {
+  try {
+    const { id,username,name,last_name,email} = req.body;
+    const result = await Usarios.update(
+      {
+        username,
+        name,
+        last_name,
+        email,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    res.json({
+      message: `El usuario con el id = ${id} se actualizo`,
+      data: result
+    })
+  } catch (error) {
+    console.error(`El error esta en el metodo PUT`, error);
   }
 };

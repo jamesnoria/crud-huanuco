@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 
+
 const DATABASE_NAME = "crud-huanuco"
 const DATABASE_USER = "gdq3xenn5sxmipaf22u8"
 const DATABASE_PASSWORD = "pscale_pw_iBcBCcOHOb6j3JnYutqOfxBeFBtuC8OL5GPTLui8xrC"
@@ -7,7 +8,7 @@ const DATABASE_PASSWORD = "pscale_pw_iBcBCcOHOb6j3JnYutqOfxBeFBtuC8OL5GPTLui8xrC
 export const sequelize = new Sequelize(
   DATABASE_NAME,
   DATABASE_USER,
-  DATABASE_PASSWORD,
+  DATABASE_PASSWORD,  
   {
     host: 'us-east.connect.psdb.cloud',
     dialect: 'mysql',
