@@ -1,14 +1,14 @@
 import Sequelize from 'sequelize';
 
-
-const DATABASE_NAME = "crud-huanuco"
-const DATABASE_USER = "gdq3xenn5sxmipaf22u8"
-const DATABASE_PASSWORD = "pscale_pw_iBcBCcOHOb6j3JnYutqOfxBeFBtuC8OL5GPTLui8xrC"
+import dotenv from 'dotenv';
+dotenv.config({
+  path: './.env',
+});
 
 export const sequelize = new Sequelize(
-  DATABASE_NAME,
-  DATABASE_USER,
-  DATABASE_PASSWORD,  
+  process.env.DATABASE_NAME,
+  process.env.DATABASE_USER,
+  process.env.DATABASE_PASSWORD,
   {
     host: 'us-east.connect.psdb.cloud',
     dialect: 'mysql',

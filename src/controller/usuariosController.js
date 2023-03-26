@@ -1,4 +1,5 @@
 import { Usarios } from "../models/usuarios.js";
+import { toUpper } from "../utils/toUpper.js";
 
 export const obtenerUsuarios = async (req, res) => {
   try {
@@ -17,9 +18,10 @@ export const obtenerUsuarios = async (req, res) => {
 export const crearUsuario = async (req, res) => {
   try {
     const { username, name, last_name, email } = req.body;
+
     const result = await Usarios.create({
       username,
-      name,
+      name: toUpper(name),
       last_name,
       email,
     });
@@ -36,7 +38,7 @@ export const crearUsuario = async (req, res) => {
 export const eliminarUsuario = async (req, res) => {
   try {
     const { username } = req.body;
-    const result = await Usarios.destroy({
+    await Usarios.destroy({
       where: {
         username,
       },

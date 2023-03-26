@@ -66,6 +66,10 @@ export const Usarios = sequelize.define(
         }
       }
     },
+    password: {
+
+    },
+    passwordConfirm
   },
   {
     timestamps: true,
