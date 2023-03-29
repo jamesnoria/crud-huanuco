@@ -67,9 +67,18 @@ export const Usarios = sequelize.define(
       }
     },
     password: {
-
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'El campo no puede ser nulo'
+        },
+        len: {
+          args: [8,35],
+          msg: 'El password debe tener entre 8 y 35 caracteres'
+        },
+      },
     },
-    passwordConfirm
   },
   {
     timestamps: true,
